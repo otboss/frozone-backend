@@ -1,0 +1,24 @@
+type IceCream {
+  id: ID!
+  name: String!
+  cost: Float!
+  toppings: [Toppings!]!
+  rating: Int
+  image: String
+}
+
+type Toppings {
+    id: ID!
+    name: String!
+}
+
+
+type Query {
+    iceCreamById(id: String): IceCream!
+}
+
+type Mutation {
+        createIceCream(iceCream: IceCream): IceCream
+        updateIceCream(iceCream: IceCream): IceCream
+        deleteIceCream(id: String): IceCream
+}

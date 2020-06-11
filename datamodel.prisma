@@ -1,0 +1,16 @@
+# THIS FILE IS RESPONSIBLE FOR DEFINING 
+# THE SCHEMA OF THE DATABASE
+
+type IceCream {
+  id: ID! @id
+  name: String!
+  cost: Float!
+  toppings: [Toppings!]!
+  rating: Int @default(value: 0)
+  image: String
+}
+
+type Toppings {
+    id: ID! @id
+    name: String!
+}
