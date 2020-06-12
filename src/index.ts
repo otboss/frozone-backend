@@ -1,8 +1,8 @@
 /**
  * Server
  * */
-
-require('dotenv').config({ path: '../variables.env' });
+import * as path from 'path'
+require('dotenv').config({ path: path.resolve("./variables.env") });
 import { createServer } from './createServer';
 // import { db } from './db';
 

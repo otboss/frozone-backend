@@ -18,7 +18,7 @@ export const db: Prisma = new Prisma(
     new PrismaParam(
         "./generated/prisma.graphql",
         process.env.PRISMA_ENDPOINT,
-        process.env.PRISMA_ENDPOINT,
+        process.env.PRISMA_SECRET,
         false
     )
 );

@@ -15,10 +15,13 @@ type Toppings {
 
 type Query {
     iceCreamById(id: String): IceCream!
+    iceCream: [IceCream]!
+    # hi: String
 }
 
 type Mutation {
-        createIceCream(iceCream: IceCream): IceCream
-        updateIceCream(iceCream: IceCream): IceCream
-        deleteIceCream(id: String): IceCream
+        # createIceCream(iceCream: IceCream): IceCream
+        # updateIceCream(iceCream: IceCream): IceCream
+        # deleteIceCream(id: String): IceCream
+        hi: String
 }

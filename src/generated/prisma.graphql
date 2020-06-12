@@ -1,0 +1,386 @@
+type AggregateIceCream {
+  count: Int!
+}
+
+type AggregateToppings {
+  count: Int!
+}
+
+type BatchPayload {
+  count: Long!
+}
+
+type IceCream {
+  id: ID!
+  name: String!
+  cost: Float!
+  toppings(where: ToppingsWhereInput, orderBy: ToppingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Toppings!]
+  rating: Int
+  image: String
+}
+
+type IceCreamConnection {
+  pageInfo: PageInfo!
+  edges: [IceCreamEdge]!
+  aggregate: AggregateIceCream!
+}
+
+input IceCreamCreateInput {
+  id: ID
+  name: String!
+  cost: Float!
+  toppings: ToppingsCreateManyInput
+  rating: Int
+  image: String
+}
+
+type IceCreamEdge {
+  node: IceCream!
+  cursor: String!
+}
+
+enum IceCreamOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  cost_ASC
+  cost_DESC
+  rating_ASC
+  rating_DESC
+  image_ASC
+  image_DESC
+}
+
+type IceCreamPreviousValues {
+  id: ID!
+  name: String!
+  cost: Float!
+  rating: Int
+  image: String
+}
+
+type IceCreamSubscriptionPayload {
+  mutation: MutationType!
+  node: IceCream
+  updatedFields: [String!]
+  previousValues: IceCreamPreviousValues
+}
+
+input IceCreamSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: IceCreamWhereInput
+  AND: [IceCreamSubscriptionWhereInput!]
+  OR: [IceCreamSubscriptionWhereInput!]
+  NOT: [IceCreamSubscriptionWhereInput!]
+}
+
+input IceCreamUpdateInput {
+  name: String
+  cost: Float
+  toppings: ToppingsUpdateManyInput
+  rating: Int
+  image: String
+}
+
+input IceCreamUpdateManyMutationInput {
+  name: String
+  cost: Float
+  rating: Int
+  image: String
+}
+
+input IceCreamWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  cost: Float
+  cost_not: Float
+  cost_in: [Float!]
+  cost_not_in: [Float!]
+  cost_lt: Float
+  cost_lte: Float
+  cost_gt: Float
+  cost_gte: Float
+  toppings_every: ToppingsWhereInput
+  toppings_some: ToppingsWhereInput
+  toppings_none: ToppingsWhereInput
+  rating: Int
+  rating_not: Int
+  rating_in: [Int!]
+  rating_not_in: [Int!]
+  rating_lt: Int
+  rating_lte: Int
+  rating_gt: Int
+  rating_gte: Int
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  AND: [IceCreamWhereInput!]
+  OR: [IceCreamWhereInput!]
+  NOT: [IceCreamWhereInput!]
+}
+
+input IceCreamWhereUniqueInput {
+  id: ID
+}
+
+scalar Long
+
+type Mutation {
+  createIceCream(data: IceCreamCreateInput!): IceCream!
+  updateIceCream(data: IceCreamUpdateInput!, where: IceCreamWhereUniqueInput!): IceCream
+  updateManyIceCreams(data: IceCreamUpdateManyMutationInput!, where: IceCreamWhereInput): BatchPayload!
+  upsertIceCream(where: IceCreamWhereUniqueInput!, create: IceCreamCreateInput!, update: IceCreamUpdateInput!): IceCream!
+  deleteIceCream(where: IceCreamWhereUniqueInput!): IceCream
+  deleteManyIceCreams(where: IceCreamWhereInput): BatchPayload!
+  createToppings(data: ToppingsCreateInput!): Toppings!
+  updateToppings(data: ToppingsUpdateInput!, where: ToppingsWhereUniqueInput!): Toppings
+  updateManyToppingses(data: ToppingsUpdateManyMutationInput!, where: ToppingsWhereInput): BatchPayload!
+  upsertToppings(where: ToppingsWhereUniqueInput!, create: ToppingsCreateInput!, update: ToppingsUpdateInput!): Toppings!
+  deleteToppings(where: ToppingsWhereUniqueInput!): Toppings
+  deleteManyToppingses(where: ToppingsWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  iceCream(where: IceCreamWhereUniqueInput!): IceCream
+  iceCreams(where: IceCreamWhereInput, orderBy: IceCreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IceCream]!
+  iceCreamsConnection(where: IceCreamWhereInput, orderBy: IceCreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IceCreamConnection!
+  toppings(where: ToppingsWhereUniqueInput!): Toppings
+  toppingses(where: ToppingsWhereInput, orderBy: ToppingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Toppings]!
+  toppingsesConnection(where: ToppingsWhereInput, orderBy: ToppingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ToppingsConnection!
+  node(id: ID!): Node
+}
+
+type Subscription {
+  iceCream(where: IceCreamSubscriptionWhereInput): IceCreamSubscriptionPayload
+  toppings(where: ToppingsSubscriptionWhereInput): ToppingsSubscriptionPayload
+}
+
+type Toppings {
+  id: ID!
+  name: String!
+}
+
+type ToppingsConnection {
+  pageInfo: PageInfo!
+  edges: [ToppingsEdge]!
+  aggregate: AggregateToppings!
+}
+
+input ToppingsCreateInput {
+  id: ID
+  name: String!
+}
+
+input ToppingsCreateManyInput {
+  create: [ToppingsCreateInput!]
+  connect: [ToppingsWhereUniqueInput!]
+}
+
+type ToppingsEdge {
+  node: Toppings!
+  cursor: String!
+}
+
+enum ToppingsOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type ToppingsPreviousValues {
+  id: ID!
+  name: String!
+}
+
+input ToppingsScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [ToppingsScalarWhereInput!]
+  OR: [ToppingsScalarWhereInput!]
+  NOT: [ToppingsScalarWhereInput!]
+}
+
+type ToppingsSubscriptionPayload {
+  mutation: MutationType!
+  node: Toppings
+  updatedFields: [String!]
+  previousValues: ToppingsPreviousValues
+}
+
+input ToppingsSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ToppingsWhereInput
+  AND: [ToppingsSubscriptionWhereInput!]
+  OR: [ToppingsSubscriptionWhereInput!]
+  NOT: [ToppingsSubscriptionWhereInput!]
+}
+
+input ToppingsUpdateDataInput {
+  name: String
+}
+
+input ToppingsUpdateInput {
+  name: String
+}
+
+input ToppingsUpdateManyDataInput {
+  name: String
+}
+
+input ToppingsUpdateManyInput {
+  create: [ToppingsCreateInput!]
+  update: [ToppingsUpdateWithWhereUniqueNestedInput!]
+  upsert: [ToppingsUpsertWithWhereUniqueNestedInput!]
+  delete: [ToppingsWhereUniqueInput!]
+  connect: [ToppingsWhereUniqueInput!]
+  set: [ToppingsWhereUniqueInput!]
+  disconnect: [ToppingsWhereUniqueInput!]
+  deleteMany: [ToppingsScalarWhereInput!]
+  updateMany: [ToppingsUpdateManyWithWhereNestedInput!]
+}
+
+input ToppingsUpdateManyMutationInput {
+  name: String
+}
+
+input ToppingsUpdateManyWithWhereNestedInput {
+  where: ToppingsScalarWhereInput!
+  data: ToppingsUpdateManyDataInput!
+}
+
+input ToppingsUpdateWithWhereUniqueNestedInput {
+  where: ToppingsWhereUniqueInput!
+  data: ToppingsUpdateDataInput!
+}
+
+input ToppingsUpsertWithWhereUniqueNestedInput {
+  where: ToppingsWhereUniqueInput!
+  update: ToppingsUpdateDataInput!
+  create: ToppingsCreateInput!
+}
+
+input ToppingsWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [ToppingsWhereInput!]
+  OR: [ToppingsWhereInput!]
+  NOT: [ToppingsWhereInput!]
+}
+
+input ToppingsWhereUniqueInput {
+  id: ID
+}

@@ -10,7 +10,7 @@ import { prisma } from './generated/prisma-client';
 
 export const createServer = function () {
     return new GraphQLServer({
-        "typeDefs": "./schema.graphql",
+        "typeDefs": "./src/schema.graphql",
         "resolvers": {
             "Mutation": Mutation,
             "Query": Query,
