@@ -1,7 +1,4 @@
 import { GraphQLServer } from 'graphql-yoga';
-// import { Query } from './misc/Query';
-// import { Mutations } from './misc/Mutations';
-import { db } from './db';
 import { Mutation } from './resolvers/Mutation';
 import { Query } from './resolvers/Query';
 import { prisma } from './generated/prisma-client';

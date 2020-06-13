@@ -3,18 +3,16 @@ import { IceCreamCreateInput } from '../generated/prisma-client/index';
 import { IceCream } from '../misc/IceCream';
 
 
-const p = prisma
+
 export const Query = {
     async iceCreamById(parent, args, ctx, info) {
-        const pris: Prisma = ctx.prisma;
-        return pris.iceCream({
+        return prisma.iceCream({
             id: args.iceCreamId
-        })
+        });
     },
 
     async iceCreams(parent, args, ctx, info) {
-        const pris: Prisma = ctx.prisma;
-        return pris.iceCreams();
+        return prisma.iceCreams();
     },
 
     async toppings(parent, args, ctx, info) {
