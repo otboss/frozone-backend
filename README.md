@@ -4,13 +4,11 @@ Corresponding Frontend: <a href="https://github.com/otboss/frozone-desserts">htt
 
 <ol>
     <li>Install global dependencies: </li>
-    <pre>npm install -g prisma graphql</pre>
+    <pre>npm install -g prisma graphql tsc</pre>
     <li>Install logdependencies: </li>
     <pre>npm install</pre>
-    <li>Transpile ts files: </li>
-    <pre>tsc ./src/index.ts</pre>
     <li>Configure Variables: </li>
     <pre>nano ./variables.env</pre>
     <li>Run Server: </li>
-    <pre>npm run debug</pre>
+    <pre>tsc ./src/index.ts && npm run debug</pre>
 </ol> 
