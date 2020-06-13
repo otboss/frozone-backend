@@ -18,6 +18,12 @@ export const Mutation = {
         });
     },
 
+    async deleteIceCream(parent, args, ctx, info) {
+        return prisma.deleteIceCream({
+            id: args.id
+        });
+    },
+
     async createUser(parent, args, ctx, info) {
         return prisma.createUser({
             email: args.email,
@@ -34,13 +40,6 @@ export const Mutation = {
 
     async deleteCartItem(parent, args, ctx, info) {
         return prisma.deleteCartItem({
-            id: args.id
-        });
-    },
-
-
-    async deleteIceCream(parent, args, ctx, info) {
-        return prisma.deleteIceCream({
             id: args.id
         });
     },
