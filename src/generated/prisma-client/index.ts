@@ -16,8 +16,10 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  cartItem: (where?: CartItemWhereInput) => Promise<boolean>;
   iceCream: (where?: IceCreamWhereInput) => Promise<boolean>;
   toppings: (where?: ToppingsWhereInput) => Promise<boolean>;
+  user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -39,6 +41,25 @@ export interface Prisma {
    * Queries
    */
 
+  cartItem: (where: CartItemWhereUniqueInput) => CartItemNullablePromise;
+  cartItems: (args?: {
+    where?: CartItemWhereInput;
+    orderBy?: CartItemOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<CartItem>;
+  cartItemsConnection: (args?: {
+    where?: CartItemWhereInput;
+    orderBy?: CartItemOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CartItemConnectionPromise;
   iceCream: (where: IceCreamWhereUniqueInput) => IceCreamNullablePromise;
   iceCreams: (args?: {
     where?: IceCreamWhereInput;
@@ -77,12 +98,47 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ToppingsConnectionPromise;
+  user: (where: UserWhereUniqueInput) => UserNullablePromise;
+  users: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<User>;
+  usersConnection: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
+  createCartItem: (data: CartItemCreateInput) => CartItemPromise;
+  updateCartItem: (args: {
+    data: CartItemUpdateInput;
+    where: CartItemWhereUniqueInput;
+  }) => CartItemPromise;
+  updateManyCartItems: (args: {
+    data: CartItemUpdateManyMutationInput;
+    where?: CartItemWhereInput;
+  }) => BatchPayloadPromise;
+  upsertCartItem: (args: {
+    where: CartItemWhereUniqueInput;
+    create: CartItemCreateInput;
+    update: CartItemUpdateInput;
+  }) => CartItemPromise;
+  deleteCartItem: (where: CartItemWhereUniqueInput) => CartItemPromise;
+  deleteManyCartItems: (where?: CartItemWhereInput) => BatchPayloadPromise;
   createIceCream: (data: IceCreamCreateInput) => IceCreamPromise;
   updateIceCream: (args: {
     data: IceCreamUpdateInput;
@@ -115,6 +171,22 @@ export interface Prisma {
   }) => ToppingsPromise;
   deleteToppings: (where: ToppingsWhereUniqueInput) => ToppingsPromise;
   deleteManyToppingses: (where?: ToppingsWhereInput) => BatchPayloadPromise;
+  createUser: (data: UserCreateInput) => UserPromise;
+  updateUser: (args: {
+    data: UserUpdateInput;
+    where: UserWhereUniqueInput;
+  }) => UserPromise;
+  updateManyUsers: (args: {
+    data: UserUpdateManyMutationInput;
+    where?: UserWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUser: (args: {
+    where: UserWhereUniqueInput;
+    create: UserCreateInput;
+    update: UserUpdateInput;
+  }) => UserPromise;
+  deleteUser: (where: UserWhereUniqueInput) => UserPromise;
+  deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -124,12 +196,18 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  cartItem: (
+    where?: CartItemSubscriptionWhereInput
+  ) => CartItemSubscriptionPayloadSubscription;
   iceCream: (
     where?: IceCreamSubscriptionWhereInput
   ) => IceCreamSubscriptionPayloadSubscription;
   toppings: (
     where?: ToppingsSubscriptionWhereInput
   ) => ToppingsSubscriptionPayloadSubscription;
+  user: (
+    where?: UserSubscriptionWhereInput
+  ) => UserSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -158,92 +236,46 @@ export type IceCreamOrderByInput =
   | "image_ASC"
   | "image_DESC";
 
+export type CartItemOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "userId_ASC"
+  | "userId_DESC"
+  | "iceCreamId_ASC"
+  | "iceCreamId_DESC";
+
+export type UserOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "email_ASC"
+  | "email_DESC"
+  | "password_ASC"
+  | "password_DESC";
+
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface ToppingsCreateManyInput {
-  create?: Maybe<ToppingsCreateInput[] | ToppingsCreateInput>;
-  connect?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
-}
-
-export type IceCreamWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface IceCreamUpdateInput {
-  name?: Maybe<String>;
-  cost?: Maybe<Float>;
-  toppings?: Maybe<ToppingsUpdateManyInput>;
-  rating?: Maybe<Int>;
-  image?: Maybe<String>;
-}
-
-export interface ToppingsWhereInput {
+export interface CartItemCreateInput {
   id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ToppingsWhereInput[] | ToppingsWhereInput>;
-  OR?: Maybe<ToppingsWhereInput[] | ToppingsWhereInput>;
-  NOT?: Maybe<ToppingsWhereInput[] | ToppingsWhereInput>;
+  userId: ID_Input;
+  iceCreamId: ID_Input;
 }
 
-export type ToppingsWhereUniqueInput = AtLeastOne<{
+export type CartItemWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
-
-export interface ToppingsUpdateWithWhereUniqueNestedInput {
-  where: ToppingsWhereUniqueInput;
-  data: ToppingsUpdateDataInput;
-}
 
 export interface ToppingsUpdateManyWithWhereNestedInput {
   where: ToppingsScalarWhereInput;
   data: ToppingsUpdateManyDataInput;
 }
 
-export interface ToppingsUpdateManyInput {
-  create?: Maybe<ToppingsCreateInput[] | ToppingsCreateInput>;
-  update?: Maybe<
-    | ToppingsUpdateWithWhereUniqueNestedInput[]
-    | ToppingsUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | ToppingsUpsertWithWhereUniqueNestedInput[]
-    | ToppingsUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
-  connect?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
-  set?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
-  disconnect?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
-  deleteMany?: Maybe<ToppingsScalarWhereInput[] | ToppingsScalarWhereInput>;
-  updateMany?: Maybe<
-    | ToppingsUpdateManyWithWhereNestedInput[]
-    | ToppingsUpdateManyWithWhereNestedInput
-  >;
+export interface IceCreamCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  cost: Float;
+  toppings?: Maybe<ToppingsCreateManyInput>;
+  rating?: Maybe<Float>;
+  image?: Maybe<String>;
 }
 
 export interface ToppingsScalarWhereInput {
@@ -301,56 +333,75 @@ export interface ToppingsUpsertWithWhereUniqueNestedInput {
   create: ToppingsCreateInput;
 }
 
-export interface ToppingsUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
+export type IceCreamWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
-export interface IceCreamUpdateManyMutationInput {
-  name?: Maybe<String>;
-  cost?: Maybe<Float>;
-  rating?: Maybe<Int>;
-  image?: Maybe<String>;
-}
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
 
-export interface ToppingsCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
+export interface UserUpdateManyMutationInput {
+  email?: Maybe<String>;
+  password?: Maybe<String>;
 }
 
 export interface ToppingsUpdateDataInput {
   name?: Maybe<String>;
 }
 
-export interface IceCreamCreateInput {
+export interface UserUpdateInput {
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface UserWhereInput {
   id?: Maybe<ID_Input>;
-  name: String;
-  cost: Float;
-  toppings?: Maybe<ToppingsCreateManyInput>;
-  rating?: Maybe<Int>;
-  image?: Maybe<String>;
-}
-
-export interface ToppingsUpdateManyDataInput {
-  name?: Maybe<String>;
-}
-
-export interface ToppingsUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface IceCreamSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<IceCreamWhereInput>;
-  AND?: Maybe<
-    IceCreamSubscriptionWhereInput[] | IceCreamSubscriptionWhereInput
-  >;
-  OR?: Maybe<IceCreamSubscriptionWhereInput[] | IceCreamSubscriptionWhereInput>;
-  NOT?: Maybe<
-    IceCreamSubscriptionWhereInput[] | IceCreamSubscriptionWhereInput
-  >;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
 export interface IceCreamWhereInput {
@@ -393,14 +444,14 @@ export interface IceCreamWhereInput {
   toppings_every?: Maybe<ToppingsWhereInput>;
   toppings_some?: Maybe<ToppingsWhereInput>;
   toppings_none?: Maybe<ToppingsWhereInput>;
-  rating?: Maybe<Int>;
-  rating_not?: Maybe<Int>;
-  rating_in?: Maybe<Int[] | Int>;
-  rating_not_in?: Maybe<Int[] | Int>;
-  rating_lt?: Maybe<Int>;
-  rating_lte?: Maybe<Int>;
-  rating_gt?: Maybe<Int>;
-  rating_gte?: Maybe<Int>;
+  rating?: Maybe<Float>;
+  rating_not?: Maybe<Float>;
+  rating_in?: Maybe<Float[] | Float>;
+  rating_not_in?: Maybe<Float[] | Float>;
+  rating_lt?: Maybe<Float>;
+  rating_lte?: Maybe<Float>;
+  rating_gt?: Maybe<Float>;
+  rating_gte?: Maybe<Float>;
   image?: Maybe<String>;
   image_not?: Maybe<String>;
   image_in?: Maybe<String[] | String>;
@@ -420,8 +471,252 @@ export interface IceCreamWhereInput {
   NOT?: Maybe<IceCreamWhereInput[] | IceCreamWhereInput>;
 }
 
+export interface CartItemWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  userId?: Maybe<ID_Input>;
+  userId_not?: Maybe<ID_Input>;
+  userId_in?: Maybe<ID_Input[] | ID_Input>;
+  userId_not_in?: Maybe<ID_Input[] | ID_Input>;
+  userId_lt?: Maybe<ID_Input>;
+  userId_lte?: Maybe<ID_Input>;
+  userId_gt?: Maybe<ID_Input>;
+  userId_gte?: Maybe<ID_Input>;
+  userId_contains?: Maybe<ID_Input>;
+  userId_not_contains?: Maybe<ID_Input>;
+  userId_starts_with?: Maybe<ID_Input>;
+  userId_not_starts_with?: Maybe<ID_Input>;
+  userId_ends_with?: Maybe<ID_Input>;
+  userId_not_ends_with?: Maybe<ID_Input>;
+  iceCreamId?: Maybe<ID_Input>;
+  iceCreamId_not?: Maybe<ID_Input>;
+  iceCreamId_in?: Maybe<ID_Input[] | ID_Input>;
+  iceCreamId_not_in?: Maybe<ID_Input[] | ID_Input>;
+  iceCreamId_lt?: Maybe<ID_Input>;
+  iceCreamId_lte?: Maybe<ID_Input>;
+  iceCreamId_gt?: Maybe<ID_Input>;
+  iceCreamId_gte?: Maybe<ID_Input>;
+  iceCreamId_contains?: Maybe<ID_Input>;
+  iceCreamId_not_contains?: Maybe<ID_Input>;
+  iceCreamId_starts_with?: Maybe<ID_Input>;
+  iceCreamId_not_starts_with?: Maybe<ID_Input>;
+  iceCreamId_ends_with?: Maybe<ID_Input>;
+  iceCreamId_not_ends_with?: Maybe<ID_Input>;
+  AND?: Maybe<CartItemWhereInput[] | CartItemWhereInput>;
+  OR?: Maybe<CartItemWhereInput[] | CartItemWhereInput>;
+  NOT?: Maybe<CartItemWhereInput[] | CartItemWhereInput>;
+}
+
+export interface ToppingsUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface ToppingsUpdateWithWhereUniqueNestedInput {
+  where: ToppingsWhereUniqueInput;
+  data: ToppingsUpdateDataInput;
+}
+
+export interface ToppingsUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
+export interface ToppingsUpdateManyInput {
+  create?: Maybe<ToppingsCreateInput[] | ToppingsCreateInput>;
+  update?: Maybe<
+    | ToppingsUpdateWithWhereUniqueNestedInput[]
+    | ToppingsUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | ToppingsUpsertWithWhereUniqueNestedInput[]
+    | ToppingsUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
+  connect?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
+  set?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
+  disconnect?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
+  deleteMany?: Maybe<ToppingsScalarWhereInput[] | ToppingsScalarWhereInput>;
+  updateMany?: Maybe<
+    | ToppingsUpdateManyWithWhereNestedInput[]
+    | ToppingsUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface IceCreamUpdateInput {
+  name?: Maybe<String>;
+  cost?: Maybe<Float>;
+  toppings?: Maybe<ToppingsUpdateManyInput>;
+  rating?: Maybe<Float>;
+  image?: Maybe<String>;
+}
+
+export interface CartItemSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CartItemWhereInput>;
+  AND?: Maybe<
+    CartItemSubscriptionWhereInput[] | CartItemSubscriptionWhereInput
+  >;
+  OR?: Maybe<CartItemSubscriptionWhereInput[] | CartItemSubscriptionWhereInput>;
+  NOT?: Maybe<
+    CartItemSubscriptionWhereInput[] | CartItemSubscriptionWhereInput
+  >;
+}
+
+export interface ToppingsCreateManyInput {
+  create?: Maybe<ToppingsCreateInput[] | ToppingsCreateInput>;
+  connect?: Maybe<ToppingsWhereUniqueInput[] | ToppingsWhereUniqueInput>;
+}
+
+export interface CartItemUpdateManyMutationInput {
+  userId?: Maybe<ID_Input>;
+  iceCreamId?: Maybe<ID_Input>;
+}
+
+export interface CartItemUpdateInput {
+  userId?: Maybe<ID_Input>;
+  iceCreamId?: Maybe<ID_Input>;
+}
+
+export interface ToppingsCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export interface ToppingsUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface ToppingsWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ToppingsWhereInput[] | ToppingsWhereInput>;
+  OR?: Maybe<ToppingsWhereInput[] | ToppingsWhereInput>;
+  NOT?: Maybe<ToppingsWhereInput[] | ToppingsWhereInput>;
+}
+
+export interface IceCreamSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<IceCreamWhereInput>;
+  AND?: Maybe<
+    IceCreamSubscriptionWhereInput[] | IceCreamSubscriptionWhereInput
+  >;
+  OR?: Maybe<IceCreamSubscriptionWhereInput[] | IceCreamSubscriptionWhereInput>;
+  NOT?: Maybe<
+    IceCreamSubscriptionWhereInput[] | IceCreamSubscriptionWhereInput
+  >;
+}
+
+export type ToppingsWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface IceCreamUpdateManyMutationInput {
+  name?: Maybe<String>;
+  cost?: Maybe<Float>;
+  rating?: Maybe<Float>;
+  image?: Maybe<String>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  password: String;
+}
+
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  email: String;
+  password: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ToppingsPreviousValues {
@@ -443,102 +738,23 @@ export interface ToppingsPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface IceCreamEdge {
-  node: IceCream;
+export interface CartItemEdge {
+  node: CartItem;
   cursor: String;
 }
 
-export interface IceCreamEdgePromise
-  extends Promise<IceCreamEdge>,
+export interface CartItemEdgePromise
+  extends Promise<CartItemEdge>,
     Fragmentable {
-  node: <T = IceCreamPromise>() => T;
+  node: <T = CartItemPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface IceCreamEdgeSubscription
-  extends Promise<AsyncIterator<IceCreamEdge>>,
+export interface CartItemEdgeSubscription
+  extends Promise<AsyncIterator<CartItemEdge>>,
     Fragmentable {
-  node: <T = IceCreamSubscription>() => T;
+  node: <T = CartItemSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface IceCream {
-  id: ID_Output;
-  name: String;
-  cost: Float;
-  rating?: Int;
-  image?: String;
-}
-
-export interface IceCreamPromise extends Promise<IceCream>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  cost: () => Promise<Float>;
-  toppings: <T = FragmentableArray<Toppings>>(args?: {
-    where?: ToppingsWhereInput;
-    orderBy?: ToppingsOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  rating: () => Promise<Int>;
-  image: () => Promise<String>;
-}
-
-export interface IceCreamSubscription
-  extends Promise<AsyncIterator<IceCream>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  cost: () => Promise<AsyncIterator<Float>>;
-  toppings: <T = Promise<AsyncIterator<ToppingsSubscription>>>(args?: {
-    where?: ToppingsWhereInput;
-    orderBy?: ToppingsOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  rating: () => Promise<AsyncIterator<Int>>;
-  image: () => Promise<AsyncIterator<String>>;
-}
-
-export interface IceCreamNullablePromise
-  extends Promise<IceCream | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  cost: () => Promise<Float>;
-  toppings: <T = FragmentableArray<Toppings>>(args?: {
-    where?: ToppingsWhereInput;
-    orderBy?: ToppingsOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  rating: () => Promise<Int>;
-  image: () => Promise<String>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface Toppings {
@@ -565,41 +781,25 @@ export interface ToppingsNullablePromise
   name: () => Promise<String>;
 }
 
-export interface AggregateToppings {
-  count: Int;
-}
-
-export interface AggregateToppingsPromise
-  extends Promise<AggregateToppings>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateToppingsSubscription
-  extends Promise<AsyncIterator<AggregateToppings>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface IceCreamConnection {
+export interface CartItemConnection {
   pageInfo: PageInfo;
-  edges: IceCreamEdge[];
+  edges: CartItemEdge[];
 }
 
-export interface IceCreamConnectionPromise
-  extends Promise<IceCreamConnection>,
+export interface CartItemConnectionPromise
+  extends Promise<CartItemConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<IceCreamEdge>>() => T;
-  aggregate: <T = AggregateIceCreamPromise>() => T;
+  edges: <T = FragmentableArray<CartItemEdge>>() => T;
+  aggregate: <T = AggregateCartItemPromise>() => T;
 }
 
-export interface IceCreamConnectionSubscription
-  extends Promise<AsyncIterator<IceCreamConnection>>,
+export interface CartItemConnectionSubscription
+  extends Promise<AsyncIterator<CartItemConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<IceCreamEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateIceCreamSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CartItemEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCartItemSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -625,76 +825,20 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface IceCreamSubscriptionPayload {
-  mutation: MutationType;
-  node: IceCream;
-  updatedFields: String[];
-  previousValues: IceCreamPreviousValues;
+export interface AggregateUser {
+  count: Int;
 }
 
-export interface IceCreamSubscriptionPayloadPromise
-  extends Promise<IceCreamSubscriptionPayload>,
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
     Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = IceCreamPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = IceCreamPreviousValuesPromise>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface IceCreamSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<IceCreamSubscriptionPayload>>,
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = IceCreamSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = IceCreamPreviousValuesSubscription>() => T;
-}
-
-export interface IceCreamPreviousValues {
-  id: ID_Output;
-  name: String;
-  cost: Float;
-  rating?: Int;
-  image?: String;
-}
-
-export interface IceCreamPreviousValuesPromise
-  extends Promise<IceCreamPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  cost: () => Promise<Float>;
-  rating: () => Promise<Int>;
-  image: () => Promise<String>;
-}
-
-export interface IceCreamPreviousValuesSubscription
-  extends Promise<AsyncIterator<IceCreamPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  cost: () => Promise<AsyncIterator<Float>>;
-  rating: () => Promise<AsyncIterator<Int>>;
-  image: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ToppingsEdge {
-  node: Toppings;
-  cursor: String;
-}
-
-export interface ToppingsEdgePromise
-  extends Promise<ToppingsEdge>,
-    Fragmentable {
-  node: <T = ToppingsPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ToppingsEdgeSubscription
-  extends Promise<AsyncIterator<ToppingsEdge>>,
-    Fragmentable {
-  node: <T = ToppingsSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface ToppingsSubscriptionPayload {
@@ -722,20 +866,132 @@ export interface ToppingsSubscriptionPayloadSubscription
   previousValues: <T = ToppingsPreviousValuesSubscription>() => T;
 }
 
-export interface AggregateIceCream {
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface IceCream {
+  id: ID_Output;
+  name: String;
+  cost: Float;
+  rating?: Float;
+  image?: String;
+}
+
+export interface IceCreamPromise extends Promise<IceCream>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  cost: () => Promise<Float>;
+  toppings: <T = FragmentableArray<Toppings>>(args?: {
+    where?: ToppingsWhereInput;
+    orderBy?: ToppingsOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  rating: () => Promise<Float>;
+  image: () => Promise<String>;
+}
+
+export interface IceCreamSubscription
+  extends Promise<AsyncIterator<IceCream>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  cost: () => Promise<AsyncIterator<Float>>;
+  toppings: <T = Promise<AsyncIterator<ToppingsSubscription>>>(args?: {
+    where?: ToppingsWhereInput;
+    orderBy?: ToppingsOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  rating: () => Promise<AsyncIterator<Float>>;
+  image: () => Promise<AsyncIterator<String>>;
+}
+
+export interface IceCreamNullablePromise
+  extends Promise<IceCream | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  cost: () => Promise<Float>;
+  toppings: <T = FragmentableArray<Toppings>>(args?: {
+    where?: ToppingsWhereInput;
+    orderBy?: ToppingsOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  rating: () => Promise<Float>;
+  image: () => Promise<String>;
+}
+
+export interface AggregateToppings {
   count: Int;
 }
 
-export interface AggregateIceCreamPromise
-  extends Promise<AggregateIceCream>,
+export interface AggregateToppingsPromise
+  extends Promise<AggregateToppings>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateIceCreamSubscription
-  extends Promise<AsyncIterator<AggregateIceCream>>,
+export interface AggregateToppingsSubscription
+  extends Promise<AsyncIterator<AggregateToppings>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CartItem {
+  id: ID_Output;
+  userId: ID_Output;
+  iceCreamId: ID_Output;
+}
+
+export interface CartItemPromise extends Promise<CartItem>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  userId: () => Promise<ID_Output>;
+  iceCreamId: () => Promise<ID_Output>;
+}
+
+export interface CartItemSubscription
+  extends Promise<AsyncIterator<CartItem>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  userId: () => Promise<AsyncIterator<ID_Output>>;
+  iceCreamId: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface CartItemNullablePromise
+  extends Promise<CartItem | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  userId: () => Promise<ID_Output>;
+  iceCreamId: () => Promise<ID_Output>;
 }
 
 export interface ToppingsConnection {
@@ -759,12 +1015,273 @@ export interface ToppingsConnectionSubscription
   aggregate: <T = AggregateToppingsSubscription>() => T;
 }
 
-export type Long = string;
+export interface CartItemSubscriptionPayload {
+  mutation: MutationType;
+  node: CartItem;
+  updatedFields: String[];
+  previousValues: CartItemPreviousValues;
+}
+
+export interface CartItemSubscriptionPayloadPromise
+  extends Promise<CartItemSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CartItemPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CartItemPreviousValuesPromise>() => T;
+}
+
+export interface CartItemSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CartItemSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CartItemSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CartItemPreviousValuesSubscription>() => T;
+}
+
+export interface IceCreamEdge {
+  node: IceCream;
+  cursor: String;
+}
+
+export interface IceCreamEdgePromise
+  extends Promise<IceCreamEdge>,
+    Fragmentable {
+  node: <T = IceCreamPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface IceCreamEdgeSubscription
+  extends Promise<AsyncIterator<IceCreamEdge>>,
+    Fragmentable {
+  node: <T = IceCreamSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface IceCreamPreviousValues {
+  id: ID_Output;
+  name: String;
+  cost: Float;
+  rating?: Float;
+  image?: String;
+}
+
+export interface IceCreamPreviousValuesPromise
+  extends Promise<IceCreamPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  cost: () => Promise<Float>;
+  rating: () => Promise<Float>;
+  image: () => Promise<String>;
+}
+
+export interface IceCreamPreviousValuesSubscription
+  extends Promise<AsyncIterator<IceCreamPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  cost: () => Promise<AsyncIterator<Float>>;
+  rating: () => Promise<AsyncIterator<Float>>;
+  image: () => Promise<AsyncIterator<String>>;
+}
+
+export interface IceCreamSubscriptionPayload {
+  mutation: MutationType;
+  node: IceCream;
+  updatedFields: String[];
+  previousValues: IceCreamPreviousValues;
+}
+
+export interface IceCreamSubscriptionPayloadPromise
+  extends Promise<IceCreamSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = IceCreamPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = IceCreamPreviousValuesPromise>() => T;
+}
+
+export interface IceCreamSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<IceCreamSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = IceCreamSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = IceCreamPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateCartItem {
+  count: Int;
+}
+
+export interface AggregateCartItemPromise
+  extends Promise<AggregateCartItem>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCartItemSubscription
+  extends Promise<AsyncIterator<AggregateCartItem>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CartItemPreviousValues {
+  id: ID_Output;
+  userId: ID_Output;
+  iceCreamId: ID_Output;
+}
+
+export interface CartItemPreviousValuesPromise
+  extends Promise<CartItemPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  userId: () => Promise<ID_Output>;
+  iceCreamId: () => Promise<ID_Output>;
+}
+
+export interface CartItemPreviousValuesSubscription
+  extends Promise<AsyncIterator<CartItemPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  userId: () => Promise<AsyncIterator<ID_Output>>;
+  iceCreamId: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface IceCreamConnection {
+  pageInfo: PageInfo;
+  edges: IceCreamEdge[];
+}
+
+export interface IceCreamConnectionPromise
+  extends Promise<IceCreamConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<IceCreamEdge>>() => T;
+  aggregate: <T = AggregateIceCreamPromise>() => T;
+}
+
+export interface IceCreamConnectionSubscription
+  extends Promise<AsyncIterator<IceCreamConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<IceCreamEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateIceCreamSubscription>() => T;
+}
+
+export interface AggregateIceCream {
+  count: Int;
+}
+
+export interface AggregateIceCreamPromise
+  extends Promise<AggregateIceCream>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateIceCreamSubscription
+  extends Promise<AsyncIterator<AggregateIceCream>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ToppingsEdge {
+  node: Toppings;
+  cursor: String;
+}
+
+export interface ToppingsEdgePromise
+  extends Promise<ToppingsEdge>,
+    Fragmentable {
+  node: <T = ToppingsPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ToppingsEdgeSubscription
+  extends Promise<AsyncIterator<ToppingsEdge>>,
+    Fragmentable {
+  node: <T = ToppingsSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface User {
+  id: ID_Output;
+  email: String;
+  password: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+}
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
-export type Int = number;
+export type String = string;
+
+export type Long = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -773,19 +1290,19 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type String = string;
+export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 /*
 The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
 */
 export type Float = number;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
 
 /**
  * Model Metadata
@@ -793,11 +1310,19 @@ export type Boolean = boolean;
 
 export const models: Model[] = [
   {
+    name: "Toppings",
+    embedded: false
+  },
+  {
     name: "IceCream",
     embedded: false
   },
   {
-    name: "Toppings",
+    name: "User",
+    embedded: false
+  },
+  {
+    name: "CartItem",
     embedded: false
   }
 ];

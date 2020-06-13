@@ -1,27 +1,39 @@
-type IceCream {
-  id: ID!
-  name: String!
-  cost: Float!
-  toppings: [Toppings!]!
-  rating: Int
-  image: String
-}
-
 type Toppings {
     id: ID!
     name: String!
 }
 
+type IceCream {
+  id: ID!
+  name: String!
+  cost: Float!
+  toppings: [Toppings!]!
+  rating: Float
+  image: String
+}
+
+type User {
+  id: ID!
+  email: String!
+  password: String!
+}
+
+type CartItem {
+  id: ID!
+  userId: ID!
+  iceCream: IceCream
+}
 
 type Query {
     iceCreamById(id: String): IceCream!
-    iceCream: [IceCream]!
-    # hi: String
+    iceCreams: [IceCream]!
+    toppings: [Toppings]!
+    users: [User]!
+    cartItems(userId: String): [CartItem]!
 }
 
 type Mutation {
-        # createIceCream(iceCream: IceCream): IceCream
-        # updateIceCream(iceCream: IceCream): IceCream
-        # deleteIceCream(id: String): IceCream
-        hi: String
+    createIceCream(name: String, cost: Float, toppings: [String!]!, rating: Float, image: String): IceCream
+    createUser(email: String, password: String): User
+    createCartItem(userId: String, iceCream: String): User
 }

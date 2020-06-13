@@ -2,7 +2,11 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateIceCream {
+export const typeDefs = /* GraphQL */ `type AggregateCartItem {
+  count: Int!
+}
+
+type AggregateIceCream {
   count: Int!
 }
 
@@ -10,8 +14,130 @@ type AggregateToppings {
   count: Int!
 }
 
+type AggregateUser {
+  count: Int!
+}
+
 type BatchPayload {
   count: Long!
+}
+
+type CartItem {
+  id: ID!
+  userId: ID!
+  iceCreamId: ID!
+}
+
+type CartItemConnection {
+  pageInfo: PageInfo!
+  edges: [CartItemEdge]!
+  aggregate: AggregateCartItem!
+}
+
+input CartItemCreateInput {
+  id: ID
+  userId: ID!
+  iceCreamId: ID!
+}
+
+type CartItemEdge {
+  node: CartItem!
+  cursor: String!
+}
+
+enum CartItemOrderByInput {
+  id_ASC
+  id_DESC
+  userId_ASC
+  userId_DESC
+  iceCreamId_ASC
+  iceCreamId_DESC
+}
+
+type CartItemPreviousValues {
+  id: ID!
+  userId: ID!
+  iceCreamId: ID!
+}
+
+type CartItemSubscriptionPayload {
+  mutation: MutationType!
+  node: CartItem
+  updatedFields: [String!]
+  previousValues: CartItemPreviousValues
+}
+
+input CartItemSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CartItemWhereInput
+  AND: [CartItemSubscriptionWhereInput!]
+  OR: [CartItemSubscriptionWhereInput!]
+  NOT: [CartItemSubscriptionWhereInput!]
+}
+
+input CartItemUpdateInput {
+  userId: ID
+  iceCreamId: ID
+}
+
+input CartItemUpdateManyMutationInput {
+  userId: ID
+  iceCreamId: ID
+}
+
+input CartItemWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  userId: ID
+  userId_not: ID
+  userId_in: [ID!]
+  userId_not_in: [ID!]
+  userId_lt: ID
+  userId_lte: ID
+  userId_gt: ID
+  userId_gte: ID
+  userId_contains: ID
+  userId_not_contains: ID
+  userId_starts_with: ID
+  userId_not_starts_with: ID
+  userId_ends_with: ID
+  userId_not_ends_with: ID
+  iceCreamId: ID
+  iceCreamId_not: ID
+  iceCreamId_in: [ID!]
+  iceCreamId_not_in: [ID!]
+  iceCreamId_lt: ID
+  iceCreamId_lte: ID
+  iceCreamId_gt: ID
+  iceCreamId_gte: ID
+  iceCreamId_contains: ID
+  iceCreamId_not_contains: ID
+  iceCreamId_starts_with: ID
+  iceCreamId_not_starts_with: ID
+  iceCreamId_ends_with: ID
+  iceCreamId_not_ends_with: ID
+  AND: [CartItemWhereInput!]
+  OR: [CartItemWhereInput!]
+  NOT: [CartItemWhereInput!]
+}
+
+input CartItemWhereUniqueInput {
+  id: ID
 }
 
 type IceCream {
@@ -19,7 +145,7 @@ type IceCream {
   name: String!
   cost: Float!
   toppings(where: ToppingsWhereInput, orderBy: ToppingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Toppings!]
-  rating: Int
+  rating: Float
   image: String
 }
 
@@ -34,7 +160,7 @@ input IceCreamCreateInput {
   name: String!
   cost: Float!
   toppings: ToppingsCreateManyInput
-  rating: Int
+  rating: Float
   image: String
 }
 
@@ -60,7 +186,7 @@ type IceCreamPreviousValues {
   id: ID!
   name: String!
   cost: Float!
-  rating: Int
+  rating: Float
   image: String
 }
 
@@ -86,14 +212,14 @@ input IceCreamUpdateInput {
   name: String
   cost: Float
   toppings: ToppingsUpdateManyInput
-  rating: Int
+  rating: Float
   image: String
 }
 
 input IceCreamUpdateManyMutationInput {
   name: String
   cost: Float
-  rating: Int
+  rating: Float
   image: String
 }
 
@@ -137,14 +263,14 @@ input IceCreamWhereInput {
   toppings_every: ToppingsWhereInput
   toppings_some: ToppingsWhereInput
   toppings_none: ToppingsWhereInput
-  rating: Int
-  rating_not: Int
-  rating_in: [Int!]
-  rating_not_in: [Int!]
-  rating_lt: Int
-  rating_lte: Int
-  rating_gt: Int
-  rating_gte: Int
+  rating: Float
+  rating_not: Float
+  rating_in: [Float!]
+  rating_not_in: [Float!]
+  rating_lt: Float
+  rating_lte: Float
+  rating_gt: Float
+  rating_gte: Float
   image: String
   image_not: String
   image_in: [String!]
@@ -171,6 +297,12 @@ input IceCreamWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createCartItem(data: CartItemCreateInput!): CartItem!
+  updateCartItem(data: CartItemUpdateInput!, where: CartItemWhereUniqueInput!): CartItem
+  updateManyCartItems(data: CartItemUpdateManyMutationInput!, where: CartItemWhereInput): BatchPayload!
+  upsertCartItem(where: CartItemWhereUniqueInput!, create: CartItemCreateInput!, update: CartItemUpdateInput!): CartItem!
+  deleteCartItem(where: CartItemWhereUniqueInput!): CartItem
+  deleteManyCartItems(where: CartItemWhereInput): BatchPayload!
   createIceCream(data: IceCreamCreateInput!): IceCream!
   updateIceCream(data: IceCreamUpdateInput!, where: IceCreamWhereUniqueInput!): IceCream
   updateManyIceCreams(data: IceCreamUpdateManyMutationInput!, where: IceCreamWhereInput): BatchPayload!
@@ -183,6 +315,12 @@ type Mutation {
   upsertToppings(where: ToppingsWhereUniqueInput!, create: ToppingsCreateInput!, update: ToppingsUpdateInput!): Toppings!
   deleteToppings(where: ToppingsWhereUniqueInput!): Toppings
   deleteManyToppingses(where: ToppingsWhereInput): BatchPayload!
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -203,18 +341,26 @@ type PageInfo {
 }
 
 type Query {
+  cartItem(where: CartItemWhereUniqueInput!): CartItem
+  cartItems(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CartItem]!
+  cartItemsConnection(where: CartItemWhereInput, orderBy: CartItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CartItemConnection!
   iceCream(where: IceCreamWhereUniqueInput!): IceCream
   iceCreams(where: IceCreamWhereInput, orderBy: IceCreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IceCream]!
   iceCreamsConnection(where: IceCreamWhereInput, orderBy: IceCreamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IceCreamConnection!
   toppings(where: ToppingsWhereUniqueInput!): Toppings
   toppingses(where: ToppingsWhereInput, orderBy: ToppingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Toppings]!
   toppingsesConnection(where: ToppingsWhereInput, orderBy: ToppingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ToppingsConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
 type Subscription {
+  cartItem(where: CartItemSubscriptionWhereInput): CartItemSubscriptionPayload
   iceCream(where: IceCreamSubscriptionWhereInput): IceCreamSubscriptionPayload
   toppings(where: ToppingsSubscriptionWhereInput): ToppingsSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type Toppings {
@@ -387,5 +533,124 @@ input ToppingsWhereInput {
 
 input ToppingsWhereUniqueInput {
   id: ID
+}
+
+type User {
+  id: ID!
+  email: String!
+  password: String!
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  id: ID
+  email: String!
+  password: String!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  email: String!
+  password: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateInput {
+  email: String
+  password: String
+}
+
+input UserUpdateManyMutationInput {
+  email: String
+  password: String
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
 }
 `
