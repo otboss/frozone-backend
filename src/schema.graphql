@@ -34,7 +34,9 @@ type Query {
 
 type Mutation {
     createIceCream(name: String, cost: Float, toppings: [String!]!, rating: Float, image: String): IceCream
+    deleteIceCream(id: String): IceCream
     createUser(email: String, password: String): User
     createCartItem(userId: String, iceCream: String): User
+    deleteCartItem(id: String): CartItem
     createTopping(name: String): Toppings
 }

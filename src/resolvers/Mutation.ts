@@ -32,6 +32,19 @@ export const Mutation = {
         })
     },
 
+    async deleteCartItem(parent, args, ctx, info) {
+        return prisma.deleteCartItem({
+            id: args.id
+        });
+    },
+
+
+    async deleteIceCream(parent, args, ctx, info) {
+        return prisma.deleteIceCream({
+            id: args.id
+        });
+    },
+
     async createTopping(parent, args, ctx, info) {
         return prisma.createToppings({
             name: args.name.toLowerCase(),
