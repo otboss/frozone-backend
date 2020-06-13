@@ -12,4 +12,9 @@ export class Topping {
         public name: string,
         public id?: string,
     ) { }
+    public static getToppings(): Array<string> {
+        return Object.keys(Toppings).filter(function (key) {
+            return isNaN(parseInt(key))
+        });
+    }
 }

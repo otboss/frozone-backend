@@ -292,6 +292,7 @@ input IceCreamWhereInput {
 
 input IceCreamWhereUniqueInput {
   id: ID
+  name: String
 }
 
 scalar Long

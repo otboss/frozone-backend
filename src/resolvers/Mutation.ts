@@ -2,15 +2,13 @@ import { prisma } from '../generated/prisma-client';
 import { Topping } from "../misc/Topping";
 
 export const Mutation = {
-    async createIceCream(
-        parent, args, ctx, info
-    ): Promise<any> {
+    async createIceCream(parent, args, ctx, info): Promise<any> {
         const toppings: Array<Topping> = [];
         for (var topping in args.toppings) {
             toppings.push(new Topping(args.toppings[topping]));
         }
         return prisma.createIceCream({
-            name: args.name,
+            name: args.name.toLowerCase(),
             cost: args.cost,
             toppings: {
                 create: toppings
@@ -32,5 +30,13 @@ export const Mutation = {
             userId: args.userId,
             iceCreamId: args.iceCreamId,
         })
-    }
+    },
+
+    async createTopping(parent, args, ctx, info) {
+        return prisma.createToppings({
+            name: args.name.toLowerCase(),
+        })
+    },
+
+
 }

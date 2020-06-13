@@ -335,6 +335,7 @@ export interface ToppingsUpsertWithWhereUniqueNestedInput {
 
 export type IceCreamWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
