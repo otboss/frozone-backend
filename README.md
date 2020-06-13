@@ -7,7 +7,7 @@ Corresponding Frontend: <a href="https://github.com/otboss/frozone-desserts">htt
     <pre>npm install -g prisma graphql tsc</pre>
     <li>Install local dependencies: </li>
     <pre>npm install</pre>
-    <li>Configure Variables: </li>
+    <li>Configure Environment Variables: </li>
     <pre>nano ./variables.env</pre>
     <li>Run Server: </li>
     <pre>tsc ./src/index.ts && npm run debug</pre>
