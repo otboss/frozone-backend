@@ -4,9 +4,7 @@ import { GraphQLServer } from './misc/GraphQLServer';
 
 
 GraphQLServer.express.use(async (req, res, next) => {
-    // if they aren't logged in, skip this
-    console.log(JSON.stringify(req.body))
-    console.log(JSON.stringify(req.query))
+    // Add Middleware
     next();
 });
 
