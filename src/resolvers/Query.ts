@@ -7,7 +7,7 @@ import { IceCream } from '../misc/IceCream';
 export const Query = {
     async iceCreamById(parent, args, ctx, info) {
         return prisma.iceCream({
-            id: args.iceCreamId
+            id: args.id
         });
     },
 

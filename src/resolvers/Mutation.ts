@@ -20,7 +20,7 @@ export const Mutation = {
 
     async deleteIceCream(parent, args, ctx, info) {
         return prisma.deleteIceCream({
-            id: args.id
+            id: args.id,
         });
     },
 
@@ -40,7 +40,7 @@ export const Mutation = {
 
     async deleteCartItem(parent, args, ctx, info) {
         return prisma.deleteCartItem({
-            id: args.id
+            id: args.id,
         });
     },
 

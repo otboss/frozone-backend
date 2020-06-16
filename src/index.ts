@@ -1,13 +1,20 @@
 import * as path from 'path'
 require('dotenv').config({ path: path.resolve("./variables.env") });
-import { createServer } from './createServer';
+import { GraphQLServer } from './misc/GraphQLServer';
 
-const server = createServer();
+
+GraphQLServer.express.use(async (req, res, next) => {
+    // if they aren't logged in, skip this
+    console.log(JSON.stringify(req.body))
+    console.log(JSON.stringify(req.query))
+    next();
+});
+
 
 // TODO: Use express middleware to manage cookies
 // TODO: Use express middleware to populate current user
 
-server.start({
+GraphQLServer.start({
     "cors": {
         "credentials": true,
         "origin": process.env.FRONTEND_URL
@@ -19,16 +26,16 @@ server.start({
         // Topping.getToppings().forEach(function (topping: string) {
         //     Mutation.createTopping(undefined, new Topping(topping), undefined, undefined)
         // });
-        // Mutation.createIceCream(undefined, new IceCream("regular cone", 140, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("sandwich", 160, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("ripple", 145, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("triple", 180, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("cake (slice)", 150, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("bucket", 420, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("crunch bar", 170, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("premium cone", 200, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("orange pop", 100, [], ""), undefined, undefined);
-        // Mutation.createIceCream(undefined, new IceCream("soft serve", 120, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("regular cone", 14000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("sandwich", 16000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("ripple", 14500, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("triple", 18000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("cake (slice)", 15000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("bucket", 42000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("crunch bar", 17000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("premium cone", 20000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("orange pop", 10000, [], ""), undefined, undefined);
+        // Mutation.createIceCream(undefined, new IceCream("soft serve", 12000, [], ""), undefined, undefined);
     })().catch(function (err) {
         console.log(err);
     });

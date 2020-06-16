@@ -1,28 +1,4 @@
-type Toppings {
-    id: ID!
-    name: String!
-}
-
-type IceCream {
-  id: ID!
-  name: String!
-  cost: Float!
-  toppings: [Toppings!]!
-  rating: Float
-  image: String
-}
-
-type User {
-  id: ID!
-  email: String!
-  password: String!
-}
-
-type CartItem {
-  id: ID!
-  userId: ID!
-  iceCream: IceCream
-}
+# import * from './generated/prisma.graphql'
 
 type Query {
     iceCreamById(id: String): IceCream!
