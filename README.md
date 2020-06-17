@@ -4,7 +4,7 @@ Corresponding Frontend: <a href="https://github.com/otboss/frozone-desserts">htt
 
 <ol>
     <li>Install global dependencies: </li>
-    <pre>npm install -g prisma graphql tsc</pre>
+    <pre>npm install -g prisma graphql typescript</pre>
     <li>Install local dependencies: </li>
     <pre>npm install</pre>
     <li>Run Server: </li>
