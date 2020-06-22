@@ -2,7 +2,8 @@
 
 type Query {
     iceCreamById(id: String): IceCream!
-    iceCreams: [IceCream]!
+    iceCreams(skip: Int, first: Int): [IceCream]!
+    iceCreamConnection(where: IceCreamWhereInput): IceCreamConnection!
     toppings: [Toppings]!
     users: [User]!
     cartItems(userId: String): [CartItem]!
