@@ -2,6 +2,7 @@ Corresponding Frontend: <a href="https://github.com/otboss/frozone-desserts">htt
 
 <h1>Frozone Backend</h1>
 <span>The backend for an ice cream store application</span>
+<br>
 <ol>
     <li>Install global dependencies (if doing development): </li>
     <pre>npm install -g prisma graphql typescript</pre>
