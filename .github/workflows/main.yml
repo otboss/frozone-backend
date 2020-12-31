@@ -31,7 +31,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Start server
-        run: npm run debug & sleep 20
+        run: npm run start & sleep 20
         
       # Runs a single command using the runners shell
       - name: Run tests
