@@ -10,7 +10,6 @@ let iceCream = new IceCream("Raspberry Lime", 134, []);
 describe("Mutations Test", () => {
 
   xit("Should create ice cream", async () => {
-    console.log(`{ "query": "{ createIceCream(input: id: "${JSON.stringify(iceCream)}") { name, id } }" }`)
     const response = await fetch(`http://localhost:${port}`, {
       "method": "POST",
       "body": `
@@ -18,8 +17,7 @@ describe("Mutations Test", () => {
       `,
       "headers": { 'Content-Type': 'application/json' },
     });
-    const responseJSON = await response.text();
-    console.log(responseJSON)
+    const responseJSON = await response.json();
     assert.strictEqual(typeof (responseJSON.data.iceCreams), "object")
     responseJSON.data.iceCreams.length >= 0;
     if (responseJSON.data.iceCreams.length > 0) {
